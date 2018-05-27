@@ -1,0 +1,8 @@
+[package]
+name = "rust_db"
+version = "0.1.0"
+authors = ["hanguang <hanguang@pyyx.com>"]
+
+[dependencies]
+
+rust-ini = "0.11.0"
