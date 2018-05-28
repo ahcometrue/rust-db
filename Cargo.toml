@@ -6,3 +6,4 @@ authors = ["hanguang <hanguang@pyyx.com>"]
 [dependencies]
 
 rust-ini = "0.11.0"
+mysql = "13.1.0"
