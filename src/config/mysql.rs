@@ -5,7 +5,7 @@ use config::config::{Conf, get_config};
 use config::env::get_env;
 
 #[derive(Debug)]
-pub struct MysqlConfig {
+pub struct Mysql {
     pub driver: String,
     pub host: String,
     pub port: u16,
@@ -15,8 +15,8 @@ pub struct MysqlConfig {
 
 }
 
-impl MysqlConfig {
-    pub fn new () -> Result<MysqlConfig, &'static str> {
+impl Mysql {
+    pub fn new () -> Result<Mysql, &'static str> {
         let section_name = get_env() + ":common";
         let conf = Ini::load_from_file(get_config(Conf::Mysql)).unwrap();
         let section = match conf.section(Some(section_name.to_owned())) {
@@ -47,7 +47,7 @@ impl MysqlConfig {
             Some(arg) => arg.to_string(),
             None => return Err("database value is null"),
         };
-        Ok(MysqlConfig {
+        Ok(Mysql {
             driver,
             host,
             port,

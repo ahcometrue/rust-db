@@ -17,7 +17,6 @@ pub fn get_config(conf: Conf) -> PathBuf {
         Conf::Env => path.push("env.ini"),
         Conf::Mysql => path.push("mysql_admin.ini"),
     };
-
     path
 }
 
