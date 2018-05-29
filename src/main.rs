@@ -1,16 +1,24 @@
 extern crate rust_db;
-use rust_db::config::mysqlconfig::MysqlConfig;
-
+use rust_db::config::mysql::MysqlConfig;
 use std::process;
 
+
+extern crate mysql;
+use mysql as my;
 
 fn main() {
     let config = MysqlConfig::new().unwrap_or_else(|err| {
         println!("ini文件有误: {}", err);
         process::exit(1);
     });
-    print!("{:?}", config.host);
+    let comm = config.driver + "://" + &config.username + ":" +
+    	&config.password + "@" + &config.host + ":" + &config.port.to_string();
+
+    let pool = my::Pool::new(comm).unwrap_or_else(|err| {
+        println!("mysql连接失败: {}", err);
+        process::exit(1);
+    });
+    println!("{:?}", pool);
+
 
 }
-
-

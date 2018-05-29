@@ -1,7 +1,8 @@
 extern crate ini;
 
 use self::ini::Ini;
-use config::getevn::get_evn;
+use config::config::{Conf, get_config};
+use config::env::get_env;
 
 #[derive(Debug)]
 pub struct MysqlConfig {
@@ -16,8 +17,8 @@ pub struct MysqlConfig {
 
 impl MysqlConfig {
     pub fn new () -> Result<MysqlConfig, &'static str> {
-        let section_name = get_evn() + ":common";
-        let conf = Ini::load_from_file("../conf/mysql_admin.ini").unwrap();
+        let section_name = get_env() + ":common";
+        let conf = Ini::load_from_file(get_config(Conf::Mysql)).unwrap();
         let section = match conf.section(Some(section_name.to_owned())) {
             Some(arg) => arg,
             None => return Err("section value is null"),
