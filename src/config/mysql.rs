@@ -1,7 +1,7 @@
 extern crate ini;
 
 use self::ini::Ini;
-use config::config::{Conf, get_config};
+use config::config::*;
 use config::env::get_env;
 
 #[derive(Debug)]
