@@ -8,3 +8,6 @@ authors = ["hanguang <hanguang@pyyx.com>"]
 rust-ini = "0.11.0"
 mysql = "13.1.0"
 md5 = "0.3.7"
+diff = "0.1.11"
+log = "0.4.0"
+env_logger = "0.5.10"
