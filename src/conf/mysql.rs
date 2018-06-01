@@ -3,17 +3,17 @@ extern crate mysql;
 
 use self::ini::Ini;
 use self::mysql::{Opts,OptsBuilder};
-use config::config::*;
-use config::env::get_env;
+use conf::config::*;
+use conf::env::get_env;
 
 pub struct MysqlConfig;
 
 impl MysqlConfig{
-    pub fn new () -> Result<Opts, &'static str> {
+pub fn new () -> Result<Opts, &'static str> {
         let mut builder = OptsBuilder::new();
 
         let _section_name = get_env() + ":common";
-        let _conf = Ini::load_from_file(get_config(Conf::Mysql)).unwrap();
+        let _conf = Ini::load_from_file(get_ini(Conf::Mysql)).unwrap();
         let _section = match _conf.section(Some(_section_name.to_owned())) {
             Some(arg) => arg,
             None => return Err("section value is null"),

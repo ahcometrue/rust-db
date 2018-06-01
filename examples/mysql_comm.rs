@@ -1,5 +1,5 @@
 extern crate rust_db;
-use rust_db::config::mysql::MysqlConfig;
+use rust_db::conf::mysql::MysqlConfig;
 use std::process;
 
 
