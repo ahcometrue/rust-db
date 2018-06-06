@@ -6,38 +6,64 @@ use self::mysql::{Opts,OptsBuilder};
 use conf::config::*;
 use conf::env::get_env;
 
+use std::fmt;
+use std::result;
+
+#[derive(Debug)]
+pub enum ConfigError {
+    SECTION,
+    HOST,
+    PORT,
+    USERNAME,
+    PASSWORD,
+    DATABASE,
+}
+
+type Result<T> = result::Result<T, ConfigError>;
+
 pub struct MysqlConfig;
 
 impl MysqlConfig{
-pub fn new () -> Result<Opts, &'static str> {
+    pub fn new () -> Result<Opts> {
         let mut builder = OptsBuilder::new();
 
         let _section_name = get_env() + ":common";
         let _conf = Ini::load_from_file(get_ini(Conf::Mysql)).unwrap();
-        let _section = match _conf.section(Some(_section_name.to_owned())) {
-            Some(arg) => arg,
-            None => return Err("section value is null"),
-        };
-        match _section.get("a.host") {
-            Some(arg) => builder.ip_or_hostname(Some(arg.to_string())),
-            None => return Err("host value is null"),
-        };
-        match _section.get("a.port") {
-            Some(arg) => builder.tcp_port(arg.parse::<u16>().unwrap()),
-            None => return Err("port value is null"),
-        };
-        match _section.get("a.username") {
-            Some(arg) => builder.user(Some(arg.to_string())),
-            None => return Err("username value is null"),
-        };
-        match _section.get("a.password") {
-            Some(arg) => builder.pass(Some(arg.to_string())),
-            None => return Err("password value is null"),
-        };
-        match _section.get("a.database") {
-            Some(arg) => builder.db_name(Some(arg.to_string())),
-            None => return Err("database value is null"),
-        };
+        let _section = try!(_conf.section(Some(_section_name.to_owned())).ok_or(ConfigError::SECTION));
+
+        let _host = try!(_section.get("a.host").ok_or(ConfigError::HOST));
+        builder.ip_or_hostname(Some(_host.to_string()));
+
+        let _port = try!(_section.get("a.port").ok_or(ConfigError::PORT));
+        builder.tcp_port(_port.parse::<u16>().unwrap());
+
+        let _username = try!(_section.get("a.username").ok_or(ConfigError::USERNAME));
+        builder.user(Some(_username.to_string()));
+
+        let _password = try!(_section.get("a.password").ok_or(ConfigError::PASSWORD));
+        builder.user(Some(_password.to_string()));
+
+        let _database = try!(_section.get("a.database").ok_or(ConfigError::DATABASE));
+        builder.db_name(Some(_database.to_string()));
         Ok(builder.into())
+    }
+}
+
+impl fmt::Display for ConfigError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            ConfigError::SECTION =>
+                write!(f, "节点配置不存在"),
+            ConfigError::HOST =>
+                write!(f, "host为空"),
+            ConfigError::PORT =>
+                write!(f, "port为空"),
+            ConfigError::USERNAME =>
+                write!(f, "username为空"),
+            ConfigError::PASSWORD =>
+                write!(f, "password为空"),
+            ConfigError::DATABASE =>
+                write!(f, "database为空"),
+        }
     }
 }
