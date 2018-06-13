@@ -8,3 +8,4 @@ authors = ["hanguang <hanguang@pyyx.com>"]
 rust-ini = "0.11.0"
 mysql = "13.1.0"
 md5 = "0.3.7"
+colored = "1.6"

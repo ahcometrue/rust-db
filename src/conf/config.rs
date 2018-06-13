@@ -1,12 +1,13 @@
 extern crate ini;
 extern crate mysql;
+extern crate colored;
 
 use self::ini::Ini;
 use self::mysql::{Opts,OptsBuilder};
 use std::fmt;
 use std::result;
 use conf::env::{Conf,get_env,get_ini};
-
+use self::colored::*;
 
 #[derive(Debug)]
 pub enum ConfigError {
@@ -49,20 +50,15 @@ impl MysqlConfig{
 }
 
 impl fmt::Display for ConfigError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match *self {
-            ConfigError::SECTION =>
-                write!(f, "节点配置不存在"),
-            ConfigError::HOST =>
-                write!(f, "host为空"),
-            ConfigError::PORT =>
-                write!(f, "port为空"),
-            ConfigError::USERNAME =>
-                write!(f, "username为空"),
-            ConfigError::PASSWORD =>
-                write!(f, "password为空"),
-            ConfigError::DATABASE =>
-                write!(f, "database为空"),
-        }
+    fn fmt(&self, _f: &mut fmt::Formatter) -> fmt::Result {
+        let _msg = match *self {
+            ConfigError::SECTION => "节点配置不存在",
+            ConfigError::HOST => "host为空",
+            ConfigError::PORT => "port为空",
+            ConfigError::USERNAME => "username为空",
+            ConfigError::PASSWORD => "password为空",
+            ConfigError::DATABASE => "database为空",
+        };
+        write!(_f, "{}", _msg.red())
     }
 }
