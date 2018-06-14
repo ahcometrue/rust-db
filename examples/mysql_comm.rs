@@ -8,7 +8,7 @@ use mysql as my;
 
 fn main() {
     let opts = MysqlConfig::new().unwrap_or_else(|err| {
-        println!("ini文件有误: {}", err);
+        println!("{}", err);
         process::exit(1);
     });
     let pool = my::Pool::new(opts).unwrap_or_else(|err| {

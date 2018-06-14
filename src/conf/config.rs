@@ -4,10 +4,11 @@ extern crate colored;
 
 use self::ini::Ini;
 use self::mysql::{Opts,OptsBuilder};
+use self::colored::Colorize;
 use std::fmt;
 use std::result;
 use conf::env::{Conf,get_env,get_ini};
-use self::colored::*;
+
 
 #[derive(Debug)]
 pub enum ConfigError {
@@ -59,6 +60,6 @@ impl fmt::Display for ConfigError {
             ConfigError::PASSWORD => "password为空",
             ConfigError::DATABASE => "database为空",
         };
-        write!(_f, "{}", _msg.red())
+        write!(_f, "ini文件有误: {}", _msg.red())
     }
 }
